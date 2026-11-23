@@ -18,8 +18,7 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked --all-groups
       - name: Run Linter
-        run: ruff format --diff --target-version=py39 
-        continue-on-error: true
+        run: ruff format --diff --target-version=py39
       - name: Run tests
         run: uv run pytest
 

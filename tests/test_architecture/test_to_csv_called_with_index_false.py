@@ -15,4 +15,18 @@ PACKAGE_ROOT = Path(__file__).parents[2] / "formation_mlops_2"
 
 def test_to_csv_called_with_index_false():
     # Given
-    assert False # noqa: B011
+    violations = []
+
+    # When
+    for filepath in sorted(PACKAGE_ROOT.rglob("*.py")):
+        for line_number, line in enumerate(
+            filepath.read_text(encoding="utf-8").splitlines(), start=1
+        ):
+            if ".to_csv(" in line and "index=False" not in line:
+                violations.append(f"{filepath}:{line_number}")
+
+    # Then
+    assert not violations, (
+        "Appels à `to_csv` sans `index=False` dans formation_mlops_2 :\n"
+        + "\n".join(violations)
+    )
